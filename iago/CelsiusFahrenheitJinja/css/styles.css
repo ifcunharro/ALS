@@ -1,0 +1,17 @@
+body h1{
+	color:blue;
+}
+
+div#frmInput{
+	background-color:lightgray;
+}
+
+input#grados{
+	border:none;
+	background-color:lightgray;
+	font-size: 10;
+}
+
+div#divError{
+	background-color:#CC0033; 
+}

@@ -17,7 +17,7 @@
 import webapp2
 import lib
 
-class CelsiusHandler(webapp2.RequestHandler):
+class gradosHandler(webapp2.RequestHandler):
 	def __init__( self , request=None, response=None):
 		self.initialize( request, response )
 		self.grados = ""
@@ -50,5 +50,5 @@ class CelsiusHandler(webapp2.RequestHandler):
 	
 
 app = webapp2.WSGIApplication([
-    ('/celsius', CelsiusHandler)
+    ('/celsius', gradosHandler)
 ], debug=True)

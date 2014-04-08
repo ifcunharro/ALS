@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<script>
+		function hideError()
+		{
+			var dvAnswer = document.getElementById( "divError" );
+			dvAnswer.innerHTML = "";
+			dvAnswer.style.display = "none";
+		}
+		function showError(msg)
+		{
+			var dvAnswer = document.getElementById( "divError" );
+			dvAnswer.innerHTML = "ERROR: " + msg;
+			dvAnswer.style.display = "block";
+	    }
+		function validate()
+		{
+			var toret = false;
+			var frmInput = document.getElementById( "frmInput" );
+			// Prepare answer, in case it is needed.
+			hideError();
+			// Prepare values
+			var name = frmInput[ "name" ].value.trim();
+			if ( name.length === 0 ) {
+				showError( "debe introducir un nombre." );
+			}
+			else
+			{
+				toret = true;
+			}
+			return toret;
+		}
+		</script>
+		<title>SaludaME</title>
+	</head>
+	<body>
+		<h1 style="color:blue">SaludaME</h1>
+		<p>
+		<div id="form">
+			<form id="frmInput" action="/hi" onSubmit="return validate();" method="post"
+					style="background-color:lightgray">
+				<p>
+					Tu nombre: <input type="text" name="name" id="name" size="10"
+					placeholder="tu nombre..."
+					style="border:none;background-color:lightgray"/>
+				</p>
+				<input type="submit" value="Enviar">
+			</form>
+		</div>
+		<div id="divError" style="background-color:#CC0033; display:none;">
+			Error!
+		</div>
+	</body>
+</html>

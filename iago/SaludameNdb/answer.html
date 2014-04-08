@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SaludaME</title>
+	</head>
+	<body>
+		Hola, {{name}}.
+		<form>
+			<input Type='button' value='Volver' 
+				onClick='history.go(-1);return true;'>
+		</form>
+		 <p>
+			<ul>
+			{% for salute in salutations %}
+				<li>{{salute.time}}: {{salute.name}}</li>
+			{% endfor %}
+			</ul>
+		</p>
+	</body>
+</html>

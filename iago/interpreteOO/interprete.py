@@ -1,5 +1,5 @@
 import pickle
-'''Usar bajo tu responsabilidad, crea objetos dinámicos y los hace persistentes
+'''Usar bajo tu responsabilidad, crea objetos dinamicos y los hace persistentes
 pero hace uso de exec y puedes lanzar comandos de sistema si usas eso 
 como nombres de tus objetos, methodos o atributos'''
 #Class acceso a datos
@@ -100,10 +100,13 @@ class Interprete:
 	
 	'''Implementa un metodo de un objeto'''	
 	def modMethod( self, objeto, method,val):
-		self.objetos[objeto]['Methods'][objeto+'_'+method] = val
-		exec(val)
-		aux = objeto+'.'+objeto+'_'+method+'= eval(method)'
-		exec(aux)	
+		if val.startswith('def '):
+			self.objetos[objeto]['Methods'][objeto+'_'+method] = val
+			exec(val)
+			aux = objeto+'.'+objeto+'_'+method+'= eval(method)'
+			exec(aux)
+		else:
+			print("Payload o inesperado detectado y eliminado")
 	
 	'''lista todos los objetos, sus metodos y atributos'''	
 	def listar( self ):
@@ -239,7 +242,6 @@ class Menu:
 			if self.interprete.hasMethod(obj,meth):
 				val = raw_input("Introduce implementacion "+
 				"metodo: ")
-				print(val);print(meth);print(obj)
 				self.interprete.modMethod(obj,meth,val)
 			else:
 				print("Metodo "+meth+" no existe "+
@@ -261,7 +263,7 @@ class Menu:
 		
 		
 def main():
-	a = Menu()
+	Menu()
 	
 	
 	

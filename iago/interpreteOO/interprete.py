@@ -6,14 +6,15 @@ como nombres de tus objetos, methodos o atributos'''
 class Interprete:
 	def __init__( self ):
 		self.guardar = {"objetos": {}}
+		
 		try:
 			f = open("objetos.bin","rb")
 			self.objetos = pickle.load(f).objetos
 			f.close()
+			print(self.objetos)
 			self.loadContext()
-			print(Punto.__dict__)
 		except:
-			self.objetos = dict()
+			self.objetos =dict()
 		self.cuerpo = {'Methods':{},'Attrs':{}}
 		
 	'''metodo loadContext, crea objetos que fuesen guardados en objeto.bin
@@ -25,9 +26,10 @@ class Interprete:
 			self.insertarContext(i)
 			for k,v in self.objetos[i]['Attrs'].items():
 				self.modAttrContext(i,k,v)
-			for s,z in self.objetos[i]['Methods'].items():
+			for s,p in self.objetos[i]['Methods'].items():
+				print(i,s,p)
 				self.addMethodContext(i,s)
-				self.modMethodContext(i,s,z)
+				self.modMethodContext(i,s,p)
 	
 	'''Crea objeto a partir nombre objeto'''	
 	def insertarContext(self,objeto):
@@ -44,8 +46,11 @@ class Interprete:
 	'''implementa el metodo de un objeto'''
 	def modMethodContext(self,objeto,method,val):
 		exec(val)
-		aux = objeto+'.'+method+'= eval(method)'
-		exec(aux)	
+		st = eval(objeto).__name__+'_'
+		name_method = method.split(st)[1]
+		aux = objeto+'.'+method+'='+name_method
+		exec(aux)
+		
 		
 	'''Crea un atributo de un objeto con su valor guardado'''
 	def modAttrContext(self,obj,atr,val):
@@ -113,6 +118,7 @@ class Interprete:
 		for i,v in self.objetos.items():
 			print(i)
 			print(v)
+				
 		
 	'''comprueba si un objeto tiene un atributo'''	
 	def hasAtr( self, obj, atr):
@@ -270,3 +276,4 @@ def main():
 	
 	
 if __name__=="__main__":main()
+

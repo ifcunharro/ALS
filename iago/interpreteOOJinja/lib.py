@@ -64,10 +64,8 @@ def buscar( obj):
 
 '''Crea atributo en objeto'''
 def addAttr( obj, atr):
-	print(obj)
 	
 	globals()['objetos'][obj]['Attrs'][atr] = None
-	print(globals()['objetos'][obj]['Attrs'])
 	#print("atributo "+atr+ " creado")
 	aux = obj+'.'+atr+"=None"
 	#exec(aux)
@@ -127,6 +125,7 @@ def hasMethod(  obj, method):
 def addObj( obj ):
 	if not buscar(obj):
 		insertar(obj)
+		
 	else:
 		pass
 		#print("Objeto "+obj+ " ya existe")

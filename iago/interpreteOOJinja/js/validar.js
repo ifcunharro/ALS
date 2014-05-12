@@ -16,11 +16,17 @@ function validarObjeto()
 	
 	if($('#formAttr').length >0){
 		$('#formAttr').remove();
-		$('label#objeto').text('Nuevo objeto');
+		$('#attr').remove()
+		$('#value').remove()
+		$('#valattr').remove()
+		$('label#formObject').text('Nuevo objeto');
 	};
 	if($('#formMethod').length >0){
 		$('#formMethod').remove();
-		$('label#objeto').text('Nuevo objeto');
+		$('#method').remove()
+		$('#valmethod').remove();
+		$('#implMethod').remove();
+		$('label#formObject').text('Nuevo objeto');
 	};
 	ponerListado()
 	
@@ -29,20 +35,20 @@ function validarObjeto()
 function validarAtributo()
 {
 	if($('#formObject').length ==0){
-		$('<div id="formObject" class="row">\
-							<div class="col-xs-4">\
-								<label id="objeto">Nombre objeto</label>\
-								<input id="object" type="text"/>\
-							</div>\
-					</div>')
+		$('<label id="formObject">Nombre objeto</label>\
+				<input name= "object" id="object" type="text"/>\
+					')
 			.insertBefore('#enviar')
 	};
 	if($('#formObject').length >0){
 	
-		$('label#objeto').text('Nombre objeto');
+		$('label#formObject').text('Nombre objeto');
 	}
 	if($('#formMethod').length >0) {
 		$('#formMethod').remove();
+		$('#method').remove()
+		$('#valmethod').remove();
+		$('#implMethod').remove();
 	}
 
 }
@@ -51,10 +57,13 @@ function validarMethod()
 {
 	
 	if($('#formObject').length >0){
-		$('label#objeto').text('Nombre objeto');
+		$('label#formObject').text('Nombre objeto');
 	};
 	if($('#formAttr').length >0){
 		$('#formAttr').remove();
+		$('#attr').remove()
+		$('#value').remove()
+		$('#valattr').remove()
 	}
 }
 
@@ -63,14 +72,12 @@ function formnobject()
 	validarObjeto()
 	if($('#formObject').length ==0){
 		ponerListado()
-		$('<div id="formObject" class="row">\
-							<div class="col-xs-4">\
-								<label id="objeto">Nuevo objeto</label>\
-								<input id="object" type="text"/>\
-							</div>\
-					</div>')
+		$('<div><label id="formObject">Nuevo objeto</label>\
+					<input name="object" id="object" type="text"/>\
+			</div>')
 			.insertBefore('#enviar')
 	}
+	$('#frmInput').attr('action','/addObject')
 	
 }
 
@@ -83,18 +90,14 @@ function formnattr()
 	borrarListado();
 		if($('#formAttr').length ==0){
 		
-			$('<div id="formAttr" class="row">\
-								<div class="col-xs-4">\
-									<label>Nuevo atributo</label>\
-									<input id="attr" type="text"/>\
-								</div>\
-								<div>\
-									<label id=value">Valor atributo</label>\
-									<input id="valattr" type="text"/>\
-								</div>\
-						</div>')
+			$('<label id="formAttr">Nuevo atributo</label>\
+									<input name="attr" id="attr" type="text"/>\
+									<label id="value">Valor atributo</label>\
+									<input name="valattr" id="valattr" type="text"/>\
+					')
 				.insertBefore('#enviar')
 		}
+	$('#frmInput').attr('action','/addAttr')
 	
 }
 
@@ -103,19 +106,15 @@ function formnmethod()
 	validarMethod();
 	
 	if($('#formMethod').length ==0){
-		$('<div id="formMethod" class="row">\
-								<div class="col-xs-4">\
-									<label>Nuevo metodo</label>\
-									<input id="method" type="text"/>\
-								</div>\
-								<div>\
-									<label>Implementación metodo</label>\
-									<input id="valmethod" type="text"/>\
-								</div>\
-						</div>')
+		$('<label id="formMethod">Nuevo metodo</label>\
+									<input name="method" id="method" type="text"/>\
+									<label name="implMethod" id="implMethod">Implementación metodo</label>\
+									<input name="valmethod" id="valmethod" type="text"/>'
+				)
 				.insertBefore('#enviar')
 		
 	}
+	$('#frmInput').attr('action','/addMethod')
 	
 }
 

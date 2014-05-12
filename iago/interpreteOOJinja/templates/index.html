@@ -7,7 +7,6 @@
 		<link rel="stylesheet" href="./css/styles.css" type="text/css" media="all"/>
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 		<script type="text/javascript" src="/js/validar.js"></script>
-		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css" media="all"/>
 		<title>Interprete Orientado a Objetos</title>
 	</head>
@@ -19,10 +18,11 @@
 						<button id="nMethod">New Method</button>
 				</div>
 			</div>
-			<form id="frmInput" action="/addObject" onSubmit="return validate();" method="post"
+			<form id="frmInput" action="/addObject" method="post"
 					style="background-color:lightgray">
-				
-				<input  id="enviar" type="submit" value="Enviar">
+				<label id="formObject">Nombre objeto</label>\
+				<input name="object" type="text"/>
+				<button id='enviar' type="submit">Enviar</button>
 			</form>
 			<div id="listado">
 			{% for pos in objetos %}

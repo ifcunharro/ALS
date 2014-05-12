@@ -24,14 +24,13 @@ div#divError{
 	background-color:#CC0033; 
 }
 
-#nObject,#nAttr,#nMethod{
+#nObject,#nAttr,#nMethod,#enviar{
 	width:120px;
 }
 button{
 	cursor: pointer;
 	text-decoration:none;
 	border: 1px solid rgb(0, 0, 51);
-	padding: 10px 10px 10px 10px;
 	color:rgb(0, 0, 0);
 	font-size:14px;
 	font-family:arial, serif;

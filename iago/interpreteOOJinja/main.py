@@ -38,7 +38,6 @@ class Salvar(ndb.Model):
 class IndexHandler(webapp2.RequestHandler):
 	def __init__( self , request=None, response=None):
 		self.initialize( request, response )
-		self.objetos = self.request.get( "objetos" )
 		self.answer = "No existen objetos"
 		
 		
@@ -64,23 +63,26 @@ class IndexHandler(webapp2.RequestHandler):
 		
 
 		
-class AddObjectHandler(webapp2.RequestHandler):
-
+class AddAttrHandler(webapp2.RequestHandler):
 	def __init__( self , request=None, response=None):
 		self.initialize( request, response )
-		self.object = ""
-		self.attr = ""
-		self.method = ""
-		self.answer = ""
 		try:
-			self.object = self.request.get( "object" )
+			self.object = self.request.get("object")
+			self.attr = self.request.get("attr")
+			self.valattr = self.request.get("valattr")
+			
 		except:
 			self.answer = "<html><body><b>ERROR</b>" \
 				"acquiring data</body></html>"
 	
 
 	def post(self):
-		pass
+		lib.initial()
+		lib.addAtributo(self.object,self.attr,self.valattr)
+		objeto =Salvar( name=self.object,objetos =lib.getObjeto(self.object))
+		objeto.put()
+		
+		
 		
 	
 			
@@ -90,5 +92,5 @@ class AddObjectHandler(webapp2.RequestHandler):
 	
 
 app = webapp2.WSGIApplication([
-    ('/', IndexHandler),('/addObject',AddObjectHandler)
+    ('/', IndexHandler),('/addAttr',AddAttrHandler)
 ], debug=True)

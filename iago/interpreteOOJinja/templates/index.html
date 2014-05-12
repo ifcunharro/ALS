@@ -28,8 +28,7 @@
 			{% for pos in objetos %}
 				{% if loop.index <= 3 %} 
 				<div id="{{pos['name']}}">
-				{% for key, value in pos.items()|reverse %}  
-				  
+				{% for key, value in pos.items() %}  
 					<dt>{{ key }}</dt>
 					<dd>{{ value }}</dd>
 				{% endfor %}

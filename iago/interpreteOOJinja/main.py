@@ -45,14 +45,12 @@ class IndexHandler(webapp2.RequestHandler):
 				
 	def get(self):
 		lib.initial()
+		lib.addAtributo('Punto','x')
+		lib.modAtributo('Punto','x','60')
 		self.ob = lib.getObjetos()
 		for i in range(0,len(self.ob)):
-			objeto = Salvar.query().filter(Salvar._properties['name']==self.ob.keys()[i])
-			if objeto.get():
-				continue
-			else:
-				objeto = Salvar( name=self.ob.keys()[i],objetos =self.ob[self.ob.keys()[i]] );
-				objeto.put();
+			objeto = Salvar( name=self.ob.keys()[i],objetos =self.ob.values()[i] );
+			objeto.put();
 			
 		s = Salvar()
 		s = json.dumps([s.to_dict() for s in Salvar.query().fetch()])
@@ -66,7 +64,7 @@ class IndexHandler(webapp2.RequestHandler):
 		
 
 		
-class AddHandler(webapp2.RequestHandler):
+class AddObjectHandler(webapp2.RequestHandler):
 
 	def __init__( self , request=None, response=None):
 		self.initialize( request, response )
@@ -92,5 +90,5 @@ class AddHandler(webapp2.RequestHandler):
 	
 
 app = webapp2.WSGIApplication([
-    ('/', IndexHandler)
+    ('/', IndexHandler),('/addObject',AddObjectHandler)
 ], debug=True)

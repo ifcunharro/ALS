@@ -1,0 +1,17 @@
+<div class="row">
+    <div>
+        <form novalidate method="post" name="form" class="form">
+            <div name="formDinamic">
+                <label for="name">Nombre: <span ng-show="form.name.$error.required">*</span></label><br />
+                <input class="form-control" type="text" ng-model="article.name" name="name" placeholder="Nombre del artículo" required /><br />
+                <label for="date">Fecha: <span ng-show="form.date.$error.required">*</span></label><br />
+                <input class="form-control datepicker" type="text" ng-model="article.date" name="date" required /><br />
+                <label for="description">Descripción: <span ng-show="form.description.$error.required">*</span></label><br />
+                <textarea class="form-control" rows="6" cols="30" placeholder=" Añade una descripción..." ng-model="article.description" name="description" required></textarea><br />
+            </div>
+            <div class="buttons">
+                <button class="btn btn-default" name="enviar" type="submit" disabled="form.$error.required">Enviar</button>
+            </div>
+        </form>
+    </div>
+</div>

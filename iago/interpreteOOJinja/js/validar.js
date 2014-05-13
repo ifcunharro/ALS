@@ -35,10 +35,10 @@ function validarObjeto()
 function validarAtributo()
 {
 	if($('#formObject').length ==0){
-		$('<label id="formObject">Nombre objeto</label>\
-				<input name= "object" id="object" type="text"/>\
+		$('<label form="forid="formObject">Nombre objeto</label>\
+		<input name= "object" id="object" type="text" required/>\
 					')
-			.insertBefore('#enviar')
+			.insertAfter('#frmInput')
 	};
 	if($('#formObject').length >0){
 	
@@ -72,10 +72,13 @@ function formnobject()
 	validarObjeto()
 	if($('#formObject').length ==0){
 		ponerListado()
+		var but;
+		but = $('#buttons').detach()
 		$('<div><label id="formObject">Nuevo objeto</label>\
-					<input name="object" id="object" type="text"/>\
+			<input name="object" id="object" type="text" required/>\
 			</div>')
-			.insertBefore('#enviar')
+			.AppendTo('#frmInput')
+		but.AppendTo('#frmInput')
 	}
 	$('#frmInput').attr('action','/addObject')
 	
@@ -91,15 +94,17 @@ function formnattr()
 		if($('#formAttr').length ==0){
 		
 			$('<label id="formAttr">Nuevo atributo</label>\
-									<input name="attr" id="attr" type="text"/>\
-									<label id="value">Valor atributo</label>\
-									<input name="valattr" id="valattr" type="text"/>\
+			<input name="attr" id="attr" type="text" required/>\
+			<label id="value">Valor atributo</label>\
+			<input name="valattr" id="valattr" type="text" required/>\
 					')
-				.insertBefore('#enviar')
+				.insertAfter('#object')
 		}
 	$('#frmInput').attr('action','/addAttr')
 	
 }
+
+
 
 function formnmethod()
 {
@@ -107,11 +112,11 @@ function formnmethod()
 	
 	if($('#formMethod').length ==0){
 		$('<label id="formMethod">Nuevo metodo</label>\
-									<input name="method" id="method" type="text"/>\
-									<label name="implMethod" id="implMethod">Implementación metodo</label>\
-									<input name="valmethod" id="valmethod" type="text"/>'
+		<input name="method" id="method" type="text" required/>\
+		<label name="implMethod" id="implMethod">Implementación metodo</label>\
+		<textarea name="valmethod" id="valmethod" cols=20 required></textarea>'
 				)
-				.insertBefore('#enviar')
+				.insertBefore('#object')
 		
 	}
 	$('#frmInput').attr('action','/addMethod')
@@ -119,7 +124,7 @@ function formnmethod()
 }
 
 window.onload = function() {
-	document.getElementById( "nObject" ).onclick = formnobject;
+	document.getElementById( "nObject" ).onclick = fornobject;
 	document.getElementById( "nAttr" ).onclick = formnattr;
 	document.getElementById( "nMethod" ).onclick = formnmethod;
 }

@@ -8,22 +8,29 @@
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 		<script type="text/javascript" src="/js/validar.js"></script>
 		<link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css" media="all"/>
+		
 		<title>Interprete Orientado a Objetos</title>
 	</head>
 	<body>
+		<div name="header" id="header"></div>
 			<div class="row">
 				<div class="col-xs-9">
 						<button id="nObject">New Object</button>
 						<button id="nAttr" >New Attr</button>
 						<button id="nMethod">New Method</button>
+						<a href="/listar"><button id="listar">Listar objetos</button></a>
 				</div>
 			</div>
-			<form id="frmInput" action="/addObject" method="post"
-					style="background-color:lightgray">
-				<label id="formObject">Nombre objeto</label>\
-				<input name="object" type="text"/>
-				<button id='enviar' type="submit">Enviar</button>
-			</form>
+			<div class="row">
+    <div>
+        		<form novalidate method="post" name="frmInput" id="frmInput" class="form">
+           	
+            <div class="buttons">
+                <button class="btn btn-default" name="enviar" type="submit" disabled="form.$error.required">Enviar</button>
+            </div>
+        </form>
+    </div>
+</div>
 			<div id="listado">
 			{% for pos in objetos %}
 				{% if loop.index <= 3 %} 
@@ -38,6 +45,6 @@
 			</div>
 		
 			
-		
+	<div name="footer" id="footer"></div>
 	</body>
 </html>

@@ -1,56 +1,35 @@
-import pickle
-'''Usar bajo tu responsabilidad, crea objetos dinamicos y los hace persistentes
-pero hace uso de exec y puedes lanzar comandos de sistema si usas eso 
-como nombres de tus objetos, methodos o atributos'''
-#Class acceso a datos
-guardar =''
-objetos = ''
-def initial( ):
-	global guardar 
-	guardar = {"objetos": {}}
-	global objetos 
-	try:
-		f = open("objetos.bin","rb")
-		
-		objetos = pickle.load(f)['objetos']
-		f.close()
-		loadContext()
-	except:
-		f.close()
-		objetos =dict()
+objetos = dict()
 	
-	
-'''metodo loadContext, crea objetos que fuesen guardados en objeto.bin
-para ello no puede usar los metodos normales de creacion sino los 
-metodos *Context para no sobreescribir la informacion de objetos ya
-existentes'''
-def loadContext():
+'''metodo loadContext, crea objetos que fuesen guardados en ndb,
+modo indica si se va a probar el objeto o solo crear la estructura
+para guardar en ndb'''
+
+def loadContext(modo):
 	global objetos
 	for i in objetos.keys():
-		insertar(i)
-		for k,v in objetos[i]['Attrs'].items():
-			addAtributo(i,k)
-			modAtributo(i,k,v)
-		for s,p in objetos[i]['Methods'].items():
-			addMethod(i,s)
-			modMethod(i,s,p)
+		insertar(i,modo)
+		for k,v in objetos[i]['Atributos'].items():
+			addAtributo(i,k,modo)
+			modAtributo(i,k,v,modo)
+		for s,p in objetos[i]['Metodos'].items():
+			addMethodo(i,s,modo)
+			modMethodo(i,s,p,modo)
+			
+
 
 '''Metodos de interprete para crear objetos'''
 
 '''Crea objeto'''
-def insertar( objeto):
+def insertar( objeto,modo):
 	global objetos
-	cuerpo = {'Methods':{},'Attrs':{}}
-	exec('class '+eval('objeto')+': pass')
-	globals()[objeto] = eval(objeto)
-	#print("Correct inserted ")	
-	objetos[objeto] = cuerpo
-	
-'''Borra objeto, solo para no guardarlo, en memoria sigue existiendo'''	
-def borrar( objeto ):
-	global objetos
-	objetos[objeto]
-	#print("Correct deleted")
+	if modo == 'test':
+		exec('class '+eval('objeto')+': pass')
+		globals()[objeto] = eval(objeto)
+	try:
+		objetos[objeto] 
+	except:
+		objetos[objeto] = {'Atributos':{},'Metodos':{}}
+	return "Correct inserted "
 	
 '''Comprueba si ya existe un objeto, fallo inesperado hace saltar
 except'''
@@ -59,155 +38,145 @@ def buscar( obj):
 	try:
 		return obj in objetos.keys()
 	except:
-		pass
-		#print("Error al buscar")
+		return "Error al buscar"
 
 '''Crea atributo en objeto'''
-def addAttr( obj, atr):
-	
-	globals()['objetos'][obj]['Attrs'][atr] = None
-	#print("atributo "+atr+ " creado")
+def addAttr( obj, atr,modo):
+	global objetos
+	objetos[obj]['Atributos'][atr] = None
 	aux = obj+'.'+atr+"=None"
-	#exec(aux)
+	if modo == 'test':
+		exec(aux)
+	return "atributo "+atr+ " creado"
 	
 '''Asigna un atributo a un objeto'''
-def modAttr(  obj, atr, val):
+def modAttr(  obj, atr, val,modo):
 	global objetos
-	objetos[obj]['Attrs'][atr]=val
-	#print("atributo "+atr+" modificado")
-	exec(obj+'.'+atr+'='+val)
+	objetos[obj]['Atributos'][atr]=val
+	if modo == 'test':
+		exec(obj+'.'+atr+'='+val)
+	return "atributo "+atr+" modificado"
 	
 '''crea method pero pensado para ser vacio, una interfaz,
 param method seria el nombre del method'''
-def addMethod(  objeto, method):
+def addMethod(  objeto, method,modo):
 	global objetos
-	objetos[objeto]['Methods'][objeto+'_'+method] = None
-	#print("Metodo "+objeto+"_"+method+" creado")
-	aux=objeto+'.'+objeto+'_'+method+'=None'
-	exec(aux)
+	if not '_' in method:
+		objetos[objeto]['Metodos'][objeto+'_'+method] = None
+		aux=objeto+'.'+objeto+'_'+method+'=None'
+		if modo == 'test':
+			exec(aux)
+	else:
+		objetos[objeto]['Metodos'][method] = None
+		aux=objeto+'.'+method+'=None'
+		if modo == 'test':
+			exec(aux)
+	return "Metodo "+objeto+"_"+method+" creado"
 
 '''Implementa un metodo de un objeto'''	
-def modMethod(  objeto, method,val):
+def modMethod(  objeto, method,val,modo):
 	global objetos
 	if val.startswith('def '):
-		objetos[objeto]['Methods'][objeto+'_'+method] = val
-		exec(val)
-		aux = objeto+'.'+objeto+'_'+method+'= eval(method)'
-		exec(aux)
+		if not '_' in method:
+			objetos[objeto]['Metodos'][objeto+'_'+method] = val
+			if modo == 'test':
+				exec(val)
+			aux = objeto+'.'+objeto+'_'+method+'= eval(method)'
+			if modo == 'test':
+				exec(aux)
+		else:
+			objetos[objeto]['Metodos'][method] = val
+			if modo == 'test':
+				exec(val)
+			me = method.split('_')
+			m = me[1]
+			aux = objeto+'.'+method+'= eval(m)'
+			if modo == 'test':
+				exec(aux)
 	else:
-		pass
-		#print("Payload o inesperado detectado y eliminado")
-
-'''lista todos los objetos, sus metodos y atributos'''	
-def listar(  ):
-	global objetos
-	for i,v in objetos.items():
-		print(i)
-		print(v)
-			
+		return "Valor inesperado detectado y eliminado"
 	
 '''comprueba si un objeto tiene un atributo'''	
 def hasAtr(  obj, atr):
 	global objetos
-	return atr in objetos[obj]['Attrs']
+	return atr in objetos[obj]['Atributos']
 
 '''comprueba si un objeto tiene un methodo'''
 def hasMethod(  obj, method):
 	global objetos
-	return obj+'_'+method in objetos[obj]['Methods']
-
-'''Fin clase interprete y metodos creacion normales'''
-
-#class menu interfaz		
+	return obj+'_'+method in objetos[obj]['Metodos']
 
 
 
-def addObj( obj ):
+'''metodos llamados externamente'''
+
+#inicializa localmente objetos ndb
+def initial( ob,modo):
+	global objetos 
+	global guardar
+	guardar = {'objetos':{}}
+	if len(ob)> 0:
+		objetos = dict()
+		for i in range(0,len(ob)):
+			objetos[ob[i]['clase']]=ob[i]['miembros']
+		loadContext(modo)
+	else:
+		objetos =dict()
+
+def addObj( obj,modo ):
 	if not buscar(obj):
-		insertar(obj)
+		insertar(obj,modo)
 		
 	else:
-		pass
-		#print("Objeto "+obj+ " ya existe")
+		return "Objeto "+obj+ " ya existe"
 
-def delObj( obj ):
-	if buscar(obj):
-		borrar(obj)
-	else:
-		pass
-		#print("Objeto "+obj+" no existe")
-
-def addAtributo(  obj,name ):
+def addAtributo(  obj,name,modo ):
 	if buscar(obj):
 		if (not hasAtr(obj,name)):
-			addAttr(obj,name)
+			addAttr(obj,name,modo)
 		else:
-			pass
-			'''print("El atributo "+name+
-				" ya existia para el objeto "+obj)'''				
+			return "El atributo "+name+\
+				" ya existia para el objeto "+obj				
 	else:
-		pass
-		#print("Objeto "+obj+" no existe")
+		return "Objeto "+obj+" no existe"
 		
-def addMetodo(  obj,name ):
+def addMethodo(  obj,name,modo ):
 	if buscar(obj):
-		if (not hasMethod(obj,name)):
-			addMethod(obj,name)
-		else:
-			pass
-			'''print("El "+miembro+" "+name+
-					  " ya existia para el objeto "+obj)'''				
+		addMethod(obj,name,modo)		
 	else:
-		pass
-		#print("Objeto "+obj+" no existe")
+		return "Objeto "+obj+" no existe"
 
 		
-def modAtributo( obj,atr,val ):
+def modAtributo( obj,atr,val,modo ):
 	if buscar(obj):
 		if hasAtr(obj,atr):
-			modAttr(obj,atr,val)
+			modAttr(obj,atr,val,modo)
 		else:
-			pass
-			'''print("Atributo "+atr+" no existe "+
-			"en objeto "+obj) '''
+			return "Atributo "+atr+" no existe "+\
+			"en objeto "+obj
 	else:
-		pass
-		#print("Objeto "+obj+" no existe")
+		return "Objeto "+obj+" no existe"
 	
-def modMethodo( obj,meth,val):
+def modMethodo( obj,meth,val,modo):
 	if buscar(obj):
-		if hasMethod(obj,meth):
-			modMethod(obj,meth,val)
-		else:
-			pass
-			'''print("Metodo "+meth+" no existe "+
-			"en objeto "+obj) '''
+		modMethod(obj,meth,val,modo)
 	else:
-		pass
-		#print("Objeto "+obj+" no existe")	
+		return "Objeto "+obj+" no existe"
 	
-def guardarya():
-	global guardar
+def getObjeto(ob):
 	global objetos
-	f = open("objetos.bin","wb")
-	guardar['objetos'] = objetos
-	#print(guardar)
-	pickle.dump(guardar,f)
-	f.close()	
-	
-def getObjeto(x):
-	global objetos
-	return objetos[x]
+	return objetos[ob]
 
 def getAtributos(objeto):
 	global objetos
-	return objetos[objeto]['Attrs']
+	return objetos[objeto]['Atributos']
 
 
 def getMetodos(objeto):
 	global objetos
-	return objetos[objeto]['Methods']
+	return objetos[objeto]['Metodos']
 
 def getObjetos():
 	global objetos
 	return objetos
+'''Fin metodos llamados externamente'''

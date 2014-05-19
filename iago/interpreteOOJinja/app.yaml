@@ -15,8 +15,9 @@ handlers:
 - url: /img
   static_dir: img
  
-- url: /templates
-  static_dir: templates
+- url: /static
+  static_dir: static
+
  
 
 

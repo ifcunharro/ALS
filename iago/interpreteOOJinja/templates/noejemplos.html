@@ -8,21 +8,6 @@
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 		<script type="text/javascript" src="/js/validar.js"></script>
 		<link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css" media="all"/>
-		<script>
-			function m() {
-			//cambiar mete por success si metodos no devuelven nada
-			//cambiar mete por failure si metodos devuelven errores
-			if('{{ola}}' == "mete"){
-				$('<div id="msg" class="alert alert-success">  \
-					<strong>{{ola}}</strong>You have successfully done it.  \
-				</div> ').insertAfter('#frmInput')
-				alertTimeout(2000);
-				}
-			else{
-				alert("mierda")
-			}
-		}
-		</script>
 		<title>Interprete Orientado a Objetos</title>
 	</head>
 	<body>
@@ -41,29 +26,19 @@
 			</div>
 			<div class="row">
     <div>
-        		<form method="post" name="frmInput" id="frmInput" class="form">
+        		<form novalidate method="post" name="frmInput" id="frmInput" class="form">
 				<div id="dinamic"></div>
-				
-            
-			 
+            <div class="buttons">
+                <button class="btn btn-default" name="enviar" type="submit">Enviar</button>
+            </div>
         </form>
     </div>
 	
 </div>
-<div id="listado">
+	<div id="listado">
 			<h4>Ejemplos</h4><br>
-			{% for pos in objetos %}
-			 {% if loop.index <4 %}
-				<div id="{{pos['clase']}}">
-				{% for key, value in pos|dictsort %}  
-					<dt>{{ key }}</dt>
-					<dd>{{ value }}</dd>
-				{% endfor %}
-				</div>
-			{% endif %}
-			{% endfor %}
-			</div>
-			
+			{{objetos}}
+			</div>		
 		
 			
 	<div name="footer" id="footer"></div>

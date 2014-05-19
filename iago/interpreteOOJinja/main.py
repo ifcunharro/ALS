@@ -15,11 +15,14 @@
 # limitations under the License.
 #
 from google.appengine.ext import ndb
+from handlers.indexHandler import IndexHandler
+from handlers.addAttrHandler import AddAttrHandler
+from handlers.addMethodHandler import AddMethodHandler
+from handlers.addObjectHandler import AddObjectHandler
 import webapp2
 import jinja2
 import os
 import json
-import lib
 
 
 
@@ -30,67 +33,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 	autoescape=True )
 
 
-	
-class Salvar(ndb.Model):
-	 name = ndb.StringProperty(required=True)
-	 objetos = ndb.JsonProperty( required = True)
-	
-class IndexHandler(webapp2.RequestHandler):
-	def __init__( self , request=None, response=None):
-		self.initialize( request, response )
-		self.answer = "No existen objetos"
-		
-		
-				
-	def get(self):
-		lib.initial()
-		lib.addAtributo('Punto','x')
-		lib.modAtributo('Punto','x','60')
-		self.ob = lib.getObjetos()
-		for i in range(0,len(self.ob)):
-			objeto = Salvar( name=self.ob.keys()[i],objetos =self.ob.values()[i] );
-			objeto.put();
-			
-		s = Salvar()
-		s = json.dumps([s.to_dict() for s in Salvar.query().fetch()])
-		
-		s = eval(s)
-		template_values = {
-			'objetos': s,
-		}
-		index = JINJA_ENVIRONMENT.get_template("index.html")
-		self.response.write(index.render(template_values))
-		
-
-		
-class AddAttrHandler(webapp2.RequestHandler):
-	def __init__( self , request=None, response=None):
-		self.initialize( request, response )
-		try:
-			self.object = self.request.get("object")
-			self.attr = self.request.get("attr")
-			self.valattr = self.request.get("valattr")
-			
-		except:
-			self.answer = "<html><body><b>ERROR</b>" \
-				"acquiring data</body></html>"
-	
-
-	def post(self):
-		lib.initial()
-		lib.addAtributo(self.object,self.attr,self.valattr)
-		objeto =Salvar( name=self.object,objetos =lib.getObjeto(self.object))
-		objeto.put()
-		
-		
-		
-	
-			
-				
-	
-	
-	
-
 app = webapp2.WSGIApplication([
-    ('/', IndexHandler),('/addAttr',AddAttrHandler)
+    ('/', IndexHandler),('/addAttr',AddAttrHandler),('/addObject',AddObjectHandler),
+	('/addMethod',AddMethodHandler)
 ], debug=True)

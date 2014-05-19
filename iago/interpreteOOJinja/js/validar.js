@@ -13,57 +13,62 @@ function ponerListado()
 
 function validarObjeto()
 {
-	
+	$('#dinamic br').remove()
 	if($('#formAttr').length >0){
 		$('#formAttr').remove();
-		$('#attr').remove()
-		$('#value').remove()
-		$('#valattr').remove()
-		$('label#formObject').text('Nuevo objeto');
+		$('label#lbObject').text('Nuevo objeto');
 	};
 	if($('#formMethod').length >0){
 		$('#formMethod').remove();
-		$('#method').remove()
-		$('#valmethod').remove();
-		$('#implMethod').remove();
-		$('label#formObject').text('Nuevo objeto');
+		$('label#lbObject').text('Nuevo objeto');
 	};
 	ponerListado()
 	
 }
 
 function validarAtributo()
-{
+{	$('#dinamic br').remove()
 	if($('#formObject').length ==0){
-		$('<label form="forid="formObject">Nombre objeto</label>\
-		<input name= "object" id="object" type="text" required/>\
-					')
-			.insertAfter('#frmInput')
+		$('#dinamic')
+			.append('<div id="formObject"><label id="lbObject">\
+			Nuevo objeto</label><br><input title="No debe comenzar por _ \
+			o numero" name="object" id="object" type="text" required/><br>\
+			</div><div class="buttons">\
+                <input id="enviar" class="btn btn-default" name="enviar" \
+				type="submit" value="Enviar" onclick="m();"></input>\
+            </div>\
+			')
 	};
 	if($('#formObject').length >0){
 	
-		$('label#formObject').text('Nombre objeto');
+		$('label#lbObject').text('Nombre objeto');
 	}
 	if($('#formMethod').length >0) {
 		$('#formMethod').remove();
-		$('#method').remove()
-		$('#valmethod').remove();
-		$('#implMethod').remove();
 	}
 
 }
 
 function validarMethod()
 {
-	
+	$('#dinamic br').remove()
 	if($('#formObject').length >0){
-		$('label#formObject').text('Nombre objeto');
+		$('label#lbObject').text('Nombre objeto');
+	};
+	if($('#formObject').length ==0){
+		$('br').remove()
+		$('#dinamic')
+			.append('<div id="formObject"><label id="lbObject">Nuevo objeto\
+			</label><br><input title="No debe comenzar por _ o numero" \
+			name="object" id="object" type="text" required/><br>\
+			</div><div class="buttons">\
+                <input id="enviar" class="btn btn-default" name="enviar" \
+				type="submit" value="Enviar" onclick="m();"></input>\
+            </div>\
+			')
 	};
 	if($('#formAttr').length >0){
 		$('#formAttr').remove();
-		$('#attr').remove()
-		$('#value').remove()
-		$('#valattr').remove()
 	}
 }
 
@@ -71,16 +76,17 @@ function formnobject()
 {
 	validarObjeto()
 	if($('#formObject').length ==0){
-		ponerListado()
-		var but;
-		but = $('#buttons').detach()
-		$('<div><label id="formObject">Nuevo objeto</label>\
-			<input name="object" id="object" type="text" required/>\
-			</div>')
-			.AppendTo('#frmInput')
-		but.AppendTo('#frmInput')
+		$('#dinamic')
+			.append('<div id="formObject"><label id="lbObject">Nuevo objeto\
+			</label><br><input title="No debe comenzar por _ o numero" \
+			name="object" id="object" type="text" required/><br></div><div class="buttons">\
+                <input id="enviar" class="btn btn-default" name="enviar" \
+				type="submit" value="Enviar" onclick="m()"></input>\
+            </div>\
+			')
 	}
 	$('#frmInput').attr('action','/addObject')
+	
 	
 }
 
@@ -91,14 +97,16 @@ function formnattr()
 {
 	validarAtributo();
 	borrarListado();
+	
 		if($('#formAttr').length ==0){
-		
-			$('<label id="formAttr">Nuevo atributo</label>\
-			<input name="attr" id="attr" type="text" required/>\
-			<label id="value">Valor atributo</label>\
-			<input name="valattr" id="valattr" type="text" required/>\
+			$('<div id="formAttr"><label>Nuevo atributo</label><br>\
+			<input title="debe ser un string o un char" name="attr" \
+			id="attr" type="text" required/><br>\
+			<label id="value">Valor atributo</label><br>\
+			<input name="valattr" id="valattr" type="text" required/><br>\
+			</div>\
 					')
-				.insertAfter('#object')
+				.insertAfter('#formObject')
 		}
 	$('#frmInput').attr('action','/addAttr')
 	
@@ -109,22 +117,40 @@ function formnattr()
 function formnmethod()
 {
 	validarMethod();
-	
+	borrarListado()
 	if($('#formMethod').length ==0){
-		$('<label id="formMethod">Nuevo metodo</label>\
-		<input name="method" id="method" type="text" required/>\
-		<label name="implMethod" id="implMethod">Implementación metodo</label>\
-		<textarea name="valmethod" id="valmethod" cols=20 required></textarea>'
-				)
-				.insertBefore('#object')
+		$('<div id="formMethod"><label>Nuevo metodo</label><br>\
+		<input name="method" id="method" type="text" required/><br>\
+		<label name="implMethod" id="implMethod">Implementación metodo\
+		</label><br><textarea title="Debe tener self como param" \
+		name="valmethod" id="valmethod" row=1 cols=20 required>\
+		</textarea><br></div>\
+				')
+				.insertAfter('#formObject')
 		
 	}
 	$('#frmInput').attr('action','/addMethod')
 	
 }
 
+function alertTimeout(wait){
+			setTimeout(function(){
+				$("#msg").remove();}, wait);
+		}
+	
+
+
+
 window.onload = function() {
-	document.getElementById( "nObject" ).onclick = fornobject;
-	document.getElementById( "nAttr" ).onclick = formnattr;
-	document.getElementById( "nMethod" ).onclick = formnmethod;
+	$(function(){
+			$('#header').load("static/header.html")
+			$('#footer').load("static/footer.html")
+		});
+	
+	
+	
+	document.getElementById( 'nObject' ).onclick = formnobject;
+	document.getElementById( 'nAttr' ).onclick = formnattr;
+	document.getElementById( 'nMethod' ).onclick = formnmethod;
+
 }

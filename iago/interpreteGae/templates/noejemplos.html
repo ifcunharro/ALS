@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="./css/styles.css" type="text/css" media="all"/>
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="/js/validar.js"></script>
+		<link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css" media="all"/>
+			<script>
+			function m() {
+			if('{{validar}}' == "success"){
+				$('<div id="msg" class="alert alert-success">\
+					<strong>{{mensaje}}</strong>  \
+				</div>').insertAfter('#frmInput')
+				alertTimeout(2000);
+				}
+			else if('{{validar}}' == "alert"){
+				$('<div id="msg" class="alert alert-danger">\
+					<strong>{{mensaje}}</strong>  \
+				</div>').insertAfter('#frmInput')
+				alertTimeout(2000);
+				}
+			else if('{{validar}}' == "warning"){
+				$('<div id="msg" class="alert alert-warning">\
+					<strong>{{mensaje}}</strong>\
+				</div>').insertAfter('#frmInput')
+				alertTimeout(2000);
+				}
+			}
+		</script>
+		<title>Interprete Orientado a Objetos</title>
+	</head>
+	<body>
+	 <div class="container-fluid">
+		<div name="header" id="header"></div>
+			<div class="row">
+			<center><h1>Welcome to Dynamic Python</h1></center>
+			<center><h3>Haz persistentes tus objetos Python</h3></center>
+			<div class="navbar navbar-default">
+				<div class="col-md-6">
+						<button id="nObject" class="btn btn-default">New Object</button>
+						<button id="nAttr" class="btn btn-default">New Attr</button>
+						<button id="nMethod" class="btn btn-default">New Method</button>
+				</div>
+			</div>
+			</div>
+			<div class="row">
+    <div>
+        		<form method="post" name="frmInput" id="frmInput" class="form">
+				<div id="dinamic"></div>
+				
+            
+			 
+        </form>
+    </div>
+	
+</div>
+	<div id="listado">
+			<h4>Ejemplos</h4><br>
+			{{objetos}}
+			</div>		
+		
+			
+	<div name="footer" id="footer"></div>
+	</div>
+
+	</body>
+</html>

@@ -1,0 +1,52 @@
+/* main.css */
+
+html,body{
+     padding:     0;
+    margin:      0 auto;
+    width:       984px;
+   height:   768px;
+}
+
+#extra{
+	height: 300px;
+}
+
+
+#header {
+	
+    height: 80px;
+	
+
+}
+
+#dinamic{
+    margin-left:auto;
+    margin-right:auto;
+    width:8em;
+}
+
+#footer {
+	
+    padding: 7px 0;
+	
+    border-top: 1px solid #999;
+	
+    font-size: 10px;
+	
+    text-align: right;
+	
+
+}
+
+
+#listado{
+    height:468px;
+}
+
+.buttons {
+	
+    margin: 5px auto 15px;
+    text-align: center;
+	
+
+}
